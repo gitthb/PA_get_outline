@@ -9,6 +9,36 @@ import numpy as np
 import cv2
 import sys
 import os
+
+"""
+sobel算法测试
+"""
+def sobel_process(sourceImg):
+    image = cv2.imread(sourceImg)
+    cv2.imshow("Original", image)
+
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    cv2.imshow("Gray", gray)
+
+    sobelx = cv2.Sobel(gray, cv2.CV_64F, 1, 0)
+    sobely = cv2.Sobel(gray, cv2.CV_64F, 0, 1)
+
+    sobelx = np.uint8(np.absolute(sobelx))
+    sobely = np.uint8(np.absolute(sobely))
+    sobelcombine = cv2.bitwise_or(sobelx,sobely)
+    #display two images in a figure
+    cv2.imshow("Edge detection by Sobel", np.hstack([gray,sobelx,sobely, sobelcombine]))
+
+    cv2.imwrite("1_edge_by_sobel.jpg", np.hstack([gray,sobelx,sobely, sobelcombine]))
+
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    return;
+    
+    
+    
+    
 def main_process(sourceImg):
     img = cv2.imread(sourceImg)
     title = 'cv2py'
@@ -73,5 +103,6 @@ def main_process(sourceImg):
     
 if __name__ == "__main__":
     print("hello world")
-    main_process("double_beds.jpg")
+    #main_process("double_beds.jpg")
+    sobel_process("double_beds.jpg")
 
